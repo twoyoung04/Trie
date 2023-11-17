@@ -1,6 +1,6 @@
 class TrieNode {
   constructor() {
-      this.children = {};
+      this.children = {}; // 非 []
       this.isEndOfWord = false;
   }
 }

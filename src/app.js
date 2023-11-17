@@ -19,14 +19,6 @@ function goThrough(root, cb) {
   cb(root);
 }
 
-function goThroughRev(root, cb) {
-  if (!root) return;
-  cb(root);
-  root.child?.forEach(node => {
-    goThroughRev(node, cb);
-  })
-}
-
 function sum(arr) {
   return arr.reduce((pre, cur) => pre + cur, 0);
 }
@@ -43,7 +35,7 @@ const cbr = canvas.getBoundingClientRect();
 function renderNode(node, x, y) {
   ctx.beginPath();
   ctx.arc(x, y, 25, 0, Math.PI * 2);
-  const color = node.isEndOfWord ? '#333' : '#bbb'
+  const color = node.isEndOfWord ? '#f00' : '#bbb'
   ctx.fillStyle = color;
   ctx.fill();
   ctx.closePath();
@@ -89,13 +81,14 @@ function renderTree(root, x = 300, y = 0) {
   renderNode(root, x, y);
 }
 
-
-
 export function app() {
   const trie = new Trie()
   trie.insert("apple");
   trie.insert("app");
   trie.insert("agent");
+  trie.insert("age");
+  trie.insert("agile");
+
   trie.insert("adult");
   trie.insert("bear");
   trie.insert("boom");
@@ -103,12 +96,32 @@ export function app() {
   trie.insert("boil");
   trie.insert("branch");
   trie.insert("agei");
+  trie.insert("boomd");
+  trie.insert("beachas");
+  trie.insert("boild");
+  trie.insert("boilp");
+  trie.insert("boilq");
+  trie.insert("boilc");
+  trie.insert("boilg");
+  trie.insert("boilgg");
+  trie.insert("boilggc");
+  trie.insert("boilggp");
+  trie.insert("branchf");
+  trie.insert("ageie");
+  trie.insert("ageief");
+  trie.insert("ageieg");
+  trie.insert("ageiep");
+  trie.insert("ageiel");
+  trie.insert("ageien");
+  trie.insert("ageiem");
+  trie.insert("ageieg");
 
-  // 转成数组
+  // 转成数组，操作熟悉一点
   goThroughObjectTree(trie.root, (node) => {
     node.child = Object.values(node.children);
   })
 
+  // 预处理，计算宽
   goThrough(trie.root, node => {
     if (node.child.length == 0) {
       node.w = 0;
@@ -121,12 +134,10 @@ export function app() {
     }
   })
 
-
   let x = 600;
   let y = 300;
 
   handleResize()
-
 
   function render() {
     renderTree(trie.root, x, y);
@@ -151,9 +162,5 @@ export function app() {
     y += wheelDeltaY / 5;
     clear();
     render();
-  })
-
-  window.addEventListener('mousewheel', (e) => {
-    console.log(e)
   })
 }
